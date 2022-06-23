@@ -1,0 +1,17 @@
+[gd_scene format=2]
+
+[node name="Lab" type="Spatial"]
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+invert_faces = true
+width = 10.0
+height = 4.0
+depth = 10.0
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner/CSGBox"]
+transform = Transform( 1, 0, 0, 0, 0.919396, -0.393332, 0, 0.393332, 0.919396, 0, -0.0300713, -6.89461 )
+invert_faces = true
+depth = 5.0
