@@ -70,32 +70,48 @@ func _physics_process(delta):
 
 func stick_process(delta):
 	var speed = Input.get_axis("backwards", "forwards") * MOVE_SPEED
-	var direction = $Player.transform.basis.xform(Vector3(0, 0, speed))
+	var downwards = -MOVE_SPEED
+	var direction = $Player.transform.basis.xform(Vector3(0, downwards, speed))
 	var look_right_left = Input.get_axis("right", "left")
 	var look_up_down = Input.get_axis("backwards", "forwards")
 	$Player.rotate_y(look_right_left*delta*ROTATION_SPEED)
 	if lookaround_mode:
 		rotate_up_down(look_up_down*delta*VERTICAL_INVERSION*ROTATION_SPEED)
+		if $Lab/girl3e_.is_inside_tree():
+			$Lab/girl3e_.TITS += delta
+			$Lab/girl3e_.TAIL += delta
+			$Lab/girl3e_.EARS += delta
 	else:
-		$Player.move_and_slide(direction, Vector3.UP)
+		$Player.move_and_slide(direction, Vector3.UP, true)
 
 func fly_process(delta):
 	var speed = Input.get_axis("fly_forwards", "fly_backwards") * MOVE_SPEED
-	var direction = $Player.transform.basis.xform(Vector3(0, 0, speed))
+	var downwards = -MOVE_SPEED
+	var direction = $Player.transform.basis.xform(Vector3(0, downwards, speed))
 	var look_up_down = Input.get_axis("backwards", "forwards")
 	var look_right_left = Input.get_axis("right", "left")
 	$Player.rotate_y(look_right_left*delta*ROTATION_SPEED)
 	rotate_up_down(look_up_down*delta*VERTICAL_INVERSION*ROTATION_SPEED)
-	$Player.move_and_slide(direction, Vector3.UP)
+	$Player.move_and_slide(direction, Vector3.UP, true)
 
 func rotate_up_down(amount):
 	$Player/Camera.rotate_x(amount)
 	$Player/Camera.rotation_degrees.x = clamp($Player/Camera.rotation_degrees.x, -60, 90)
 
 func _input(event):
-	if event.is_action("toggle_lookaround") and event.is_action_pressed("toggle_lookaround"):
+	if event.is_action("toggle_lookaround") and event.is_action_pressed("toggle_lookaround") and CONTROLSCHEME == ControlScheme.STICK:
 		lookaround_mode = not lookaround_mode
 		set_subtitle("Lookaround Mode is " + str(lookaround_mode))
+	if event.is_action("toggle_handedness") and event.is_action_pressed("toggle_handedness"):
+		if HANDEDNESS == Handedness.LEFT:
+			set_handedness(Handedness.RIGHT)
+		else:
+			set_handedness(Handedness.LEFT)
+	if event.is_action("toggle_control_scheme") and event.is_action_pressed("toggle_control_scheme"):
+		if CONTROLSCHEME == ControlScheme.FLY:
+			set_controlscheme(ControlScheme.STICK)
+		else:
+			set_controlscheme(ControlScheme.FLY)
 
 func set_subtitle(text):
 	if has_node("Player"):

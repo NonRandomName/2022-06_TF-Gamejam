@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/bendzz model/girl3e_.glb" type="PackedScene" id=1]
+[ext_resource path="res://girl3e_.gd" type="Script" id=2]
+
+[node name="girl3e_" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
